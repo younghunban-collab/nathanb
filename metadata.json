@@ -1,0 +1,8 @@
+{
+  "name": "Copy of AI Mentoring Academy",
+  "description": "An advanced AI-driven mentoring platform featuring L2E (Learn to Earn), gamified avatar growth, and automated student record generation.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
