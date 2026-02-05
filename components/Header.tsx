@@ -12,18 +12,20 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, onBackToLanding }) => {
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-8">
           <button 
-            onClick={onBackToLanding}
-            className="text-2xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent flex items-center gap-2"
+            onClick={() => onNavigate('portal')}
+            className="text-2xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent flex items-center gap-2 hover:scale-[1.02] transition-transform active:scale-95"
           >
-            <span className="text-sm opacity-50 hover:opacity-100 transition-opacity">←</span>
-            AI MENTOR
+            AI MENTORING EDUCATION
           </button>
           
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden lg:flex items-center gap-6">
             <button onClick={() => onNavigate('education')} className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">교육 소개</button>
             <button onClick={() => onNavigate('mentors')} className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">멘토 소개</button>
             <button onClick={() => onNavigate('reviews')} className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">리뷰</button>
             <button onClick={() => onNavigate('classroom')} className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">내강의실</button>
+            <button onClick={() => onNavigate('pointshop')} className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">포인트샵</button>
+            <button onClick={() => onNavigate('abroad')} className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">어학연수</button>
+            <button onClick={() => onNavigate('support')} className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">고객센터</button>
           </nav>
         </div>
 

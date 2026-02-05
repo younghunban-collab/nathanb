@@ -2,76 +2,57 @@
 import React from 'react';
 
 const EducationSection: React.FC = () => {
-  const coreFeatures = [
-    {
-      title: "1:1 화상 멘토링",
-      description: "실시간 대화 내용을 AI가 분석하여 핵심 키워드를 추출하고 수업 내용을 자동 요약합니다.",
-      tag: "CORE SERVICE"
-    },
-    {
-      title: "AI 레벨 테스트",
-      description: "개별 맞춤형 진단 로직을 통해 정교한 학습 수준 및 성향을 분석합니다.",
-      tag: "CORE SERVICE"
-    },
-    {
-      title: "아바타 성장 시스템",
-      description: "학습 결과에 따라 성장하는 개인 아바타. 젖먹이 아기에서 성인까지, 성취감을 시각화합니다.",
-      tag: "GAMIFICATION"
-    },
-    {
-      title: "L2E (Learn to Earn)",
-      description: "학습 성과가 즉시 포인트로 보상됩니다. 포인트는 아이템 구매나 현금화가 가능합니다.",
-      tag: "ECONOMY"
-    }
-  ];
-
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
-      <div className="text-center mb-16">
-        <h2 className="text-4xl font-black text-slate-900 mb-4">Discover the Freedom to Learn</h2>
-        <p className="text-slate-600 max-w-2xl mx-auto text-lg font-light">
-          단순한 지식 전달을 넘어, AI와 게임화 요소를 결합한 전인교육 시스템입니다.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {coreFeatures.map((feature, idx) => (
-          <div key={idx} className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-xl transition-all group">
-            <div className="text-[0.65rem] font-black tracking-widest text-blue-600 mb-4 px-2 py-1 bg-blue-50 w-fit rounded-full uppercase">
-              {feature.tag}
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">{feature.title}</h3>
-            <p className="text-slate-500 leading-relaxed text-sm">
-              {feature.description}
-            </p>
+    <div className="max-w-7xl mx-auto px-6 py-32">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
+        <div className="space-y-10">
+          <div className="space-y-4">
+            <span className="text-[10px] font-black text-blue-600 tracking-[0.5em] uppercase block">Elite Strategy</span>
+            <h2 className="text-5xl md:text-6xl font-black text-slate-900 leading-[1.05] tracking-tighter">
+              대한민국 1% 대입 전략,<br />
+              <span className="text-blue-600 italic">AI 멘토</span>와 함께 설계하세요.
+            </h2>
           </div>
-        ))}
-      </div>
-
-      <div className="mt-20 bg-slate-900 rounded-[3rem] p-12 text-white flex flex-col md:flex-row items-center gap-12 overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/20 blur-[120px] rounded-full"></div>
-        <div className="flex-1 z-10">
-          <h3 className="text-3xl font-black mb-6">AI 세특 빌더 (Student Record Builder)</h3>
-          <p className="text-slate-400 mb-8 leading-relaxed max-w-lg">
-            멘토와의 수업 중 언급된 주제를 AI가 분석하여 '학교 생활기록부' 기재용 탐구 보고서 초안을 자동 생성합니다. 환경 이슈부터 생명과학까지, 입시와 직결된 결과물을 제공합니다.
+          
+          <p className="text-slate-500 text-lg leading-relaxed font-medium">
+            AI 멘토링 아카데미는 단순한 화상 수업을 넘어, 아바타 성장 시스템과 
+            L2E(Learn to Earn) 보상 모델을 통해 학습의 즐거움과 실질적인 대입 결과물을 동시에 제공합니다.
           </p>
-          <button className="px-8 py-4 bg-blue-600 hover:bg-blue-500 rounded-2xl font-bold text-sm transition-all shadow-lg shadow-blue-600/20">
-            상담 신청하기
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
+            {[
+              "1:1 맞춤형 화상 멘토링",
+              "AI 기반 세특 보고서 자동 생성",
+              "게임화된 아바타 성장 시스템",
+              "학습 보상 포인트 시스템 (L2E)"
+            ].map((text, i) => (
+              <div key={i} className="flex items-center gap-4 group">
+                <div className="w-6 h-6 bg-blue-50 rounded-full flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
+                </div>
+                <span className="text-sm font-black text-slate-700 uppercase tracking-tight">{text}</span>
+              </div>
+            ))}
+          </div>
+          
+          <button className="px-10 py-5 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-2xl hover:bg-blue-600 transition-all active:scale-95">
+            상세 교육 과정 보기 ↗
           </button>
         </div>
-        <div className="flex-1 w-full max-w-sm">
-          <div className="bg-slate-800/50 backdrop-blur-md border border-slate-700 p-6 rounded-3xl">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+        
+        <div className="relative">
+          <div className="grid grid-cols-2 gap-6">
+            <div className="aspect-[3/4] rounded-[4rem] bg-slate-100 overflow-hidden shadow-2xl transform -translate-y-8">
+               <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" alt="AI Education" />
             </div>
-            <div className="space-y-4">
-              <div className="h-4 bg-slate-700 rounded w-3/4"></div>
-              <div className="h-4 bg-slate-700 rounded w-1/2"></div>
-              <div className="h-20 bg-slate-700/50 rounded w-full flex items-center justify-center text-[10px] text-slate-500 font-mono">
-                GENERATING REPORT...
-              </div>
+            <div className="aspect-[3/4] rounded-[4rem] bg-blue-50 overflow-hidden shadow-2xl mt-12">
+               <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=600&auto=format&fit=crop" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" alt="Students" />
+            </div>
+          </div>
+          {/* Decorative Dot Element */}
+          <div className="absolute -bottom-10 -right-10 w-32 h-32 opacity-20 hidden lg:block">
+            <div className="grid grid-cols-4 gap-4">
+              {[...Array(16)].map((_, i) => <div key={i} className="w-1.5 h-1.5 bg-slate-400 rounded-full"></div>)}
             </div>
           </div>
         </div>
