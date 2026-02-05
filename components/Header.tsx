@@ -3,17 +3,19 @@ import React from 'react';
 
 interface HeaderProps {
   onNavigate: (id: string) => void;
+  onBackToLanding: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
+const Header: React.FC<HeaderProps> = ({ onNavigate, onBackToLanding }) => {
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-8">
           <button 
-            onClick={() => onNavigate('home')}
-            className="text-2xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"
+            onClick={onBackToLanding}
+            className="text-2xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent flex items-center gap-2"
           >
+            <span className="text-sm opacity-50 hover:opacity-100 transition-opacity">←</span>
             AI MENTOR
           </button>
           

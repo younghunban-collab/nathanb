@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
 import EducationSection from './components/EducationSection';
@@ -9,9 +9,15 @@ import DashboardSection from './components/DashboardSection';
 import Footer from './components/Footer';
 
 const App: React.FC = () => {
-  const [activePage, setActivePage] = useState<'home' | 'education' | 'mentors' | 'reviews' | 'classroom'>('home');
+  const [view, setView] = useState<'landing' | 'portal'>('landing');
 
-  // Handle section scrolling
+  // Function to enter the main portal
+  const enterPortal = () => {
+    setView('portal');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  // Function to handle scrolling within the portal
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -19,32 +25,35 @@ const App: React.FC = () => {
     }
   };
 
+  if (view === 'landing') {
+    return (
+      <main className="h-screen w-screen overflow-hidden">
+        <HeroSection onEnter={enterPortal} />
+      </main>
+    );
+  }
+
   return (
-    <div className="relative min-h-screen">
-      <Header onNavigate={scrollToSection} />
+    <div className="relative min-h-screen animate-in fade-in duration-700">
+      <Header 
+        onNavigate={scrollToSection} 
+        onBackToLanding={() => setView('landing')} 
+      />
       
       <main>
-        {/* Section 1: Hero with Spline */}
-        <section id="home" className="h-screen w-full relative overflow-hidden">
-          <HeroSection onScrollDown={() => scrollToSection('education')} />
-        </section>
-
-        {/* Section 2: Education Content */}
+        {/* Portal Page Sections */}
         <section id="education" className="min-h-screen bg-slate-50 pt-20">
           <EducationSection />
         </section>
 
-        {/* Section 3: Mentors */}
         <section id="mentors" className="min-h-screen bg-white pt-20">
           <MentorSection />
         </section>
 
-        {/* Section 4: Reviews */}
         <section id="reviews" className="min-h-screen bg-slate-50 pt-20">
           <ReviewSection />
         </section>
 
-        {/* Section 5: My Classroom */}
         <section id="classroom" className="min-h-screen bg-white pt-20">
           <DashboardSection />
         </section>
