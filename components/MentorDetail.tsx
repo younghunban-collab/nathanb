@@ -1,14 +1,22 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Language } from '../types';
 
 interface MentorDetailProps {
   lang: Language;
-  // Add onNavigate to match expected props in App.tsx
   onNavigate: (id: string) => void;
 }
 
 const MentorDetail: React.FC<MentorDetailProps> = ({ lang, onNavigate }) => {
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    specialty: 'Full-Stack AI Education',
+    experience: '',
+    portfolio: ''
+  });
+
   const mentors = [
     {
       name: "Daudet Afroseth",
@@ -49,9 +57,24 @@ const MentorDetail: React.FC<MentorDetailProps> = ({ lang, onNavigate }) => {
     { title: "B2B Solutions", desc: "학원 및 기관용 AI 레벨 테스트 모듈 공급", icon: "🏢" }
   ];
 
+  const handleApplySubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const applicants = JSON.parse(localStorage.getItem('academy_mentor_applicants') || '[]');
+    const newApplicant = {
+      ...formData,
+      id: Date.now(),
+      applyDate: new Date().toISOString(),
+      status: 'Pending'
+    };
+    localStorage.setItem('academy_mentor_applicants', JSON.stringify([...applicants, newApplicant]));
+    alert(lang === 'ko' ? "멘토 지원이 완료되었습니다! 검토 후 연락드리겠습니다." : "Application submitted! We will contact you after review.");
+    setIsApplyModalOpen(false);
+    setFormData({ name: '', email: '', specialty: 'Full-Stack AI Education', experience: '', portfolio: '' });
+  };
+
   return (
     <div className="bg-white font-sans">
-      {/* 1. Professional Team Lineup (Based on EliteGuard Image Section 3) */}
+      {/* 1. Professional Team Lineup */}
       <section className="max-w-7xl mx-auto px-6 pt-32 pb-20 text-center">
         <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-12 uppercase italic">
           {lang === 'ko' ? <>Meet Our <span className="text-blue-600">Expert Mentors</span></> : <>Meet Our <span className="text-blue-600">Expert Mentors</span></>}
@@ -70,7 +93,7 @@ const MentorDetail: React.FC<MentorDetailProps> = ({ lang, onNavigate }) => {
         </div>
       </section>
 
-      {/* 2. Core Expertise Grid (Based on EliteGuard "Our Expertise" Section) */}
+      {/* 2. Core Expertise Grid */}
       <section className="bg-slate-50 py-32 px-6 rounded-[5rem] mx-4 mb-32 border border-slate-100 shadow-sm">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-24">
@@ -96,7 +119,7 @@ const MentorDetail: React.FC<MentorDetailProps> = ({ lang, onNavigate }) => {
         </div>
       </section>
 
-      {/* 3. Detailed Profile Highlight (Based on "How Our Team Can Assist You") */}
+      {/* 3. Detailed Profile Highlight */}
       <section className="max-w-7xl mx-auto px-6 py-32 flex flex-col lg:flex-row items-center gap-20">
         <div className="flex-1 space-y-10">
           <h3 className="text-5xl font-black tracking-tighter leading-tight italic uppercase">
@@ -131,8 +154,11 @@ const MentorDetail: React.FC<MentorDetailProps> = ({ lang, onNavigate }) => {
                </p>
              </div>
           </div>
-          <button className="px-12 py-5 bg-slate-900 text-white rounded-xl font-bold text-sm shadow-2xl hover:scale-105 active:scale-95 transition-all">
-            {lang === 'ko' ? '우리의 프로세스 더 알아보기' : 'LEARN MORE ABOUT OUR PROCESS'}
+          <button 
+            onClick={() => setIsApplyModalOpen(true)}
+            className="px-12 py-5 bg-slate-900 text-white rounded-xl font-bold text-sm shadow-2xl hover:scale-105 active:scale-95 transition-all"
+          >
+            {lang === 'ko' ? '멘토 지원하기' : 'Apply for Mentor'}
           </button>
         </div>
         <div className="flex-1 relative">
@@ -147,7 +173,53 @@ const MentorDetail: React.FC<MentorDetailProps> = ({ lang, onNavigate }) => {
         </div>
       </section>
 
-      {/* 4. Consultation Form (Based on EliteGuard Bottom Section) */}
+      {/* Mentor Application Modal */}
+      {isApplyModalOpen && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-md" onClick={() => setIsApplyModalOpen(false)}></div>
+          <div className="relative w-full max-w-xl bg-white rounded-[3rem] shadow-2xl p-12 overflow-y-auto max-h-[90vh]">
+            <div className="flex justify-between items-center mb-8">
+              <h3 className="text-3xl font-black italic uppercase tracking-tighter text-slate-900">Mentor Application</h3>
+              <button onClick={() => setIsApplyModalOpen(false)} className="text-slate-400 hover:text-slate-900">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+            <form className="space-y-6" onSubmit={handleApplySubmit}>
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Full Name</label>
+                <input required type="text" placeholder="이름을 입력하세요" className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4 text-sm font-bold outline-none focus:ring-2 ring-blue-600/10" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Email Address</label>
+                <input required type="email" placeholder="example@email.com" className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4 text-sm font-bold outline-none focus:ring-2 ring-blue-600/10" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Specialization</label>
+                <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4 text-sm font-bold outline-none focus:ring-2 ring-blue-600/10 appearance-none" value={formData.specialty} onChange={(e) => setFormData({...formData, specialty: e.target.value})}>
+                  <option>Full-Stack AI Education</option>
+                  <option>Admission Strategist</option>
+                  <option>Psychological Counseling</option>
+                  <option>L2E Ecosystem Design</option>
+                  <option>English Conversation</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Brief Bio / Experience</label>
+                <textarea required rows={4} placeholder="경력이나 자기소개를 간략히 적어주세요." className="w-full bg-slate-50 border border-slate-100 rounded-[2rem] px-6 py-4 text-sm font-bold outline-none focus:ring-2 ring-blue-600/10" value={formData.experience} onChange={(e) => setFormData({...formData, experience: e.target.value})}></textarea>
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Portfolio / Career Link</label>
+                <input type="url" placeholder="https://..." className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4 text-sm font-bold outline-none focus:ring-2 ring-blue-600/10" value={formData.portfolio} onChange={(e) => setFormData({...formData, portfolio: e.target.value})} />
+              </div>
+              <button type="submit" className="w-full py-5 bg-blue-600 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-slate-900 transition-all shadow-xl active:scale-95">
+                Submit Application ↗
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* 4. Consultation Form */}
       <section className="bg-slate-900 py-32 rounded-t-[5rem] mt-20">
         <div className="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row gap-20">
           <div className="lg:w-1/2 text-white space-y-8">

@@ -1,14 +1,15 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Language } from '../types';
 
 interface CompanyDetailProps {
   lang: Language;
-  // Add onNavigate to match expected props in App.tsx
   onNavigate: (id: string) => void;
 }
 
 const CompanyDetail: React.FC<CompanyDetailProps> = ({ lang, onNavigate }) => {
+  const [isDeckOpen, setIsDeckOpen] = useState(false);
+
   const stats = [
     { label: lang === 'ko' ? "프로젝트 성공" : "Projects Completed", value: "500+" },
     { label: lang === 'ko' ? "평균 평점" : "Average Rating", value: "4.9/5" },
@@ -22,6 +23,133 @@ const CompanyDetail: React.FC<CompanyDetailProps> = ({ lang, onNavigate }) => {
     { title: "AI Learning Engine", icon: "🤖", desc: lang === 'ko' ? "차세대 교육용 AI 분석 도구" : "Next-gen AI learning tools" },
     { title: "Cloud Integration", icon: "☁️", desc: lang === 'ko' ? "안정적인 클라우드 인프라 구축" : "Stable cloud infrastructure" },
     { title: "Global R&D Support", icon: "🌍", desc: lang === 'ko' ? "전 세계 파트너사 기술 서포트" : "Global partner tech support" }
+  ];
+
+  const portfolio = [
+    {
+      year: "2025",
+      title: "K 은행 챗봇 시스템 개발 프로젝트 수주 및 개발",
+      env: "Android / iOS / WEB / KAKAO",
+      lang: "Thyme leaf, css, html, java script / Java Spring boot",
+      contribution: "기획/설계/디자인/퍼블리싱 100%, 개발 100%",
+      desc: "UI/UX 기획, 설계, 디자인, 퍼블리싱, 프론트엔드 개발, API 연동 개발 등"
+    },
+    {
+      year: "2025",
+      title: "온누리국제영업비밀보호센터 웹/앱 플랫폼 개발",
+      env: "Android / iOS / WEB",
+      lang: "Vuejs, React Native / Back End – Java, Python / Java Spring boot",
+      contribution: "전 분야 100%",
+      desc: "저작권 보안, 보호, 대용량 파일 암호화 처리 시스템 등 개발"
+    },
+    {
+      year: "2025",
+      title: "한국생산기술연구원 HMI 라이브러리 및 CNC 통신 인터페이스 개발",
+      env: "Intel Celeron J4125, 8GB RAM",
+      lang: "Windows 10 Embedded, Visual Studio 2022 Library",
+      contribution: "전 분야 100%",
+      desc: "HMI 플랫폼의 통신 및 APP 매니저 호환성 구현"
+    },
+    {
+      year: "2025",
+      title: "H그룹 계열사 스마트 제조장비용 CNC 탑재 HMI 디자인 및 개발",
+      env: "C#, .NET MAUI / WPF, SignalR, Figma",
+      contribution: "전 분야 100%",
+      desc: "Launcher APP, 기계상태 모니터링, 공구리스트, 가공 프로그램 EDIT 개발"
+    },
+    {
+      year: "2025",
+      title: "서울대학교병원 소아희귀난치질환 통증평가 시스템 PEACE 개발",
+      env: "Maria DB, MYSQL",
+      lang: "C#, MAUI Blazor, .NET Core MVC",
+      contribution: "전 분야 100%",
+      desc: "PEACE App(iOS, Android) 및 PEACE Web Admin 시스템 개발"
+    },
+    {
+      year: "2025",
+      title: "이지스헬스케어 이지스포털 EGHIS Portal 플랫폼 개발",
+      env: "DB: Mysql, WAS: AWS(Tomcat 8.5)",
+      lang: "JAVA SPRING BOOT / OS LINUX",
+      contribution: "전 분야 100%",
+      desc: "의료 정보 게시, 맞춤형 추천, 실시간 상담 챗봇, 뉴스 RSS 리더 등 스마트 의료 포털 구축"
+    },
+    {
+      year: "2025",
+      title: "한화그룹 계열사 HFT 푸드 자동화 플랫폼 개발",
+      env: "Winform, CodeIgniter, Figma",
+      lang: "JAVA, REACT, C#, PHP 7",
+      contribution: "전 분야 100%",
+      desc: "KIOSK/Online 주문시스템, 생산기계 주문처리 및 전달 시스템 관리 플랫폼 전체 개발"
+    },
+    {
+      year: "2025",
+      title: "지학사 티솔루션 플랫폼 및 교육 IT 솔루션 운영유지보수",
+      env: "DB: Mysql, WAS: AWS(Tomcat 8.5)",
+      lang: "JAVA / OS LINUX (전자정부 프레임워크)",
+      contribution: "전 분야 100%",
+      desc: "교과관리, 나의교실, 고객센터, 평가자료 등 종합 교육 플랫폼 운영 개발"
+    },
+    {
+      year: "2025",
+      title: "D로보틱스 로보랩/데브랩 대표 웹 & CRM 플랫폼 업데이트",
+      env: "Azure Web app, Microsoft Universal Data Access",
+      lang: "C#, .NET Framework 4.6.1, HTML/JS/CSS",
+      contribution: "전 분야 100%",
+      desc: "로보틱스 연구실 기획, 코딩, 개발 및 QA 최적화 업무 수행"
+    },
+    {
+      year: "2025",
+      title: "CNC Biotech 체외수정 인큐베이터 제어 및 웹시스템 개발",
+      env: "C#, IIS, .NET Framework, SMC-2V04 API",
+      contribution: "전 분야 100%",
+      desc: "인큐베이터 내 HW 제어 프로그램(카메라, 조명, 레일) 및 관리 웹시스템 개발"
+    },
+    {
+      year: "2025",
+      title: "SM 엔터테인먼트 아티스트 관리 및 트레이닝 시스템 고도화",
+      env: "Maria DB, PHP, JS, HTML, CSS",
+      contribution: "전 분야 100%",
+      desc: "아티스트 운영 관리 및 트레이닝 관리 시스템 구축 및 유지보수"
+    },
+    {
+      year: "2025",
+      title: "SINOKOR 글로벌 해양 선박 관리 플랫폼 2.6단계 개발",
+      env: "PHP, EngineX/Apache, MY SQL, AIS API, Google Map API",
+      contribution: "전 분야 100%",
+      desc: "글로벌 선단 실시간 관리 시스템 고도화 개발"
+    },
+    {
+      year: "2024",
+      title: "세움 가설재 산출 솔루션(ZWCad Addin) 개발",
+      env: "Windows / ZWCad Addin / PHP 7",
+      lang: "C# (WPF) / .NET Framework",
+      contribution: "디자인/개발 100%",
+      desc: "설계 자동화 솔루션, 체적산출 및 도면작업 자동화 구현"
+    },
+    {
+      year: "2024",
+      title: "서울대병원 소아희귀난치질환 마취프로토콜 플랫폼 개발",
+      env: "Maria DB, MS Windows",
+      lang: "C# / MAUI, BLAZOR / ASP.NET CORE",
+      contribution: "전 분야 100%",
+      desc: "특정 마취 프로토콜 DB화 및 공익 의료 플랫폼 개발"
+    },
+    {
+      year: "2024",
+      title: "삼정회계법인 KPMG PA 업무 자동화 솔루션",
+      env: "MDB, Visual Studio .NET",
+      lang: "C#, WINFORM",
+      contribution: "전 분야 100%",
+      desc: "사내/파트너/고객사 업무 자동화 차세대 플랫폼 개발"
+    },
+    {
+      year: "2024",
+      title: "S 바이오로직스 EDIS 용접 공정 업무 관리 시스템",
+      env: "Windows, Java Spring, MyBatis",
+      lang: "C# (WPF), Java Spring",
+      contribution: "전 분야 100%",
+      desc: "바이오 공장 용접 업무 관리 및 EDMS 솔루션 설계"
+    }
   ];
 
   const t = {
@@ -38,7 +166,7 @@ const CompanyDetail: React.FC<CompanyDetailProps> = ({ lang, onNavigate }) => {
       ceoPara6: "감사합니다.",
       ceoSign: "JoyMaster Inc. CEO David Park",
       ctaBtn: "상담하기",
-      deckBtn: "회사 소개서"
+      deckBtn: "회사소개서"
     },
     en: {
       heroTitle: <>Your Strategic <br /> <span className="text-blue-600">Technology Advocates</span></>,
@@ -71,7 +199,10 @@ const CompanyDetail: React.FC<CompanyDetailProps> = ({ lang, onNavigate }) => {
           <button className="px-10 py-5 bg-slate-900 text-white rounded-xl font-black uppercase tracking-widest text-xs shadow-2xl hover:bg-blue-600 transition-all active:scale-95">
             {t.ctaBtn}
           </button>
-          <button className="px-10 py-5 bg-white border border-slate-200 text-slate-900 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-slate-50 transition-all">
+          <button 
+            onClick={() => setIsDeckOpen(true)}
+            className="px-10 py-5 bg-white border border-slate-200 text-slate-900 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-slate-50 transition-all"
+          >
             {t.deckBtn}
           </button>
         </div>
@@ -89,6 +220,97 @@ const CompanyDetail: React.FC<CompanyDetailProps> = ({ lang, onNavigate }) => {
            </div>
         </div>
       </section>
+
+      {/* Company Deck Modal */}
+      {isDeckOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-slate-900/90 backdrop-blur-md" onClick={() => setIsDeckOpen(false)}></div>
+          <div className="relative w-full max-w-5xl bg-white rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 h-[90vh] flex flex-col">
+            <div className="p-8 md:p-12 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
+               <div className="space-y-1">
+                 <h2 className="text-3xl font-black italic tracking-tighter text-slate-900 uppercase">Success Portfolio</h2>
+                 <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">20 Years of Technical Innovation</p>
+               </div>
+               <button onClick={() => setIsDeckOpen(false)} className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-all">
+                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
+               </button>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto p-8 md:p-12 space-y-12 custom-scrollbar bg-white">
+              {/* Intro Text */}
+              <div className="bg-blue-50/50 p-10 rounded-[2.5rem] border border-blue-100 space-y-4">
+                <p className="text-blue-800 font-bold leading-relaxed">
+                  20여년간 수많은 프로젝트를 수주하여 외주 개발을 성공적으로 구현해오고 있습니다.<br />
+                  개발그룹의 프로젝트 외주개발 및 참여한 성공적인 포트폴리오를 일부 한정 게시합니다.<br />
+                  외주개발의 장점은 비용 절감, 전문 개발팀의 협력, 개발 프로세스 시간 단축 등입니다.<br />
+                  클라이언트 계약상 오픈할 수 없는 외주개발 프로젝트 내용은 게시하지 않았습니다.
+                </p>
+              </div>
+
+              {/* Portfolio Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {portfolio.map((item, idx) => (
+                  <div key={idx} className="group p-8 bg-slate-50 border border-slate-100 rounded-[2.5rem] hover:bg-white hover:shadow-2xl hover:border-blue-200 transition-all duration-500 space-y-5">
+                    <div className="flex justify-between items-start">
+                       <span className="px-4 py-1.5 bg-blue-600 text-white text-[10px] font-black rounded-full uppercase tracking-widest">{item.year}</span>
+                    </div>
+                    <h3 className="text-xl font-black text-slate-900 leading-tight group-hover:text-blue-600 transition-colors">{item.title}</h3>
+                    <div className="space-y-3 pt-4 border-t border-slate-200/60">
+                       {item.env && (
+                         <div className="flex flex-col gap-1">
+                           <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Environment</span>
+                           <p className="text-xs font-bold text-slate-700">{item.env}</p>
+                         </div>
+                       )}
+                       {item.lang && (
+                         <div className="flex flex-col gap-1">
+                           <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Languages</span>
+                           <p className="text-xs font-bold text-slate-700">{item.lang}</p>
+                         </div>
+                       )}
+                       <div className="flex flex-col gap-1">
+                         <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Contribution</span>
+                         <p className="text-xs font-bold text-blue-600">{item.contribution}</p>
+                       </div>
+                       <div className="flex flex-col gap-1">
+                         <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Description</span>
+                         <p className="text-xs font-medium text-slate-500 leading-relaxed italic">"{item.desc}"</p>
+                       </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Additional Text Content From User */}
+              <div className="space-y-6 pt-10 border-t border-slate-100">
+                <h4 className="text-xl font-black italic text-slate-400 uppercase tracking-widest">Historical Archive (Selected)</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {[
+                    "2023년 AI 인공지능 스포츠 훈련 LMS 시스템",
+                    "2023년 마린키퍼 해양 환경관리 시스템",
+                    "2022년 N 피트니스 그룹 통합 플랫폼",
+                    "2022년 메타렉처 메타버스 강의 솔루션",
+                    "2021년 J-INTERACTION 음식 인식 다이어트 앱",
+                    "2020년 녹십자MS 블루투스 측정 기기 연동",
+                    "2019년 KSIS 검정 ERP 및 회계 시스템",
+                    "2018년 블록체인 Hyperledger 부동산 DAPP"
+                  ].map((h, i) => (
+                    <div key={i} className="flex items-center gap-3 p-4 bg-white border border-slate-100 rounded-2xl shadow-sm">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <p className="text-xs font-bold text-slate-600">{h}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-8 bg-slate-900 text-white flex justify-between items-center shrink-0">
+               <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40">© 2025 JoyMaster Technical Solutions</p>
+               <button onClick={() => setIsDeckOpen(false)} className="text-[10px] font-black uppercase tracking-widest hover:text-blue-400 transition-colors">Close Portal [ESC]</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 2. Stats & Mission Section */}
       <section className="bg-blue-50/50 py-32 rounded-[5rem] mx-4 mb-20 px-6">
@@ -239,6 +461,12 @@ const CompanyDetail: React.FC<CompanyDetailProps> = ({ lang, onNavigate }) => {
            </a>
         </div>
       </section>
+      
+      <style>{`
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f8fafc; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+      `}</style>
     </div>
   );
 };
