@@ -1,9 +1,13 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { GoogleGenAI } from "@google/genai";
+import { Language } from '../types';
 
 interface ChatBotProps {
   onNavigate: (id: string) => void;
+  lang: Language;
+  forcedOpen?: boolean;
+  setForcedOpen?: (val: boolean) => void;
 }
 
 interface Message {
@@ -11,14 +15,21 @@ interface Message {
   text: string;
 }
 
-const ChatBot: React.FC<ChatBotProps> = ({ onNavigate }) => {
+const ChatBot: React.FC<ChatBotProps> = ({ onNavigate, lang, forcedOpen, setForcedOpen }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'bot', text: '반갑습니다! 저는 당신의 학습 여정을 돕는 조이마스터봇입니다. 무엇을 도와드릴까요?' }
+    { role: 'bot', text: lang === 'ko' ? '반갑습니다! 저는 당신의 학습 여정을 돕는 조이마스터봇입니다. 무엇을 도와드릴까요?' : 'Welcome! I am JoyMasterBot. How can I help you today?' }
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (forcedOpen) {
+      setIsOpen(true);
+      if (setForcedOpen) setForcedOpen(false);
+    }
+  }, [forcedOpen, setForcedOpen]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -52,20 +63,20 @@ const ChatBot: React.FC<ChatBotProps> = ({ onNavigate }) => {
         },
       });
 
-      const botResponse = response.text || "죄송합니다. 시스템 오류가 발생했습니다. 다시 시도해주세요.";
+      const botResponse = response.text || (lang === 'ko' ? "죄송합니다. 시스템 오류가 발생했습니다. 다시 시도해주세요." : "Sorry, a system error occurred. Please try again.");
       setMessages(prev => [...prev, { role: 'bot', text: botResponse }]);
     } catch (error) {
       console.error("AI Error:", error);
-      setMessages(prev => [...prev, { role: 'bot', text: "통신 중 오류가 발생했습니다. 조이마스터봇의 회로를 점검 중입니다!" }]);
+      setMessages(prev => [...prev, { role: 'bot', text: lang === 'ko' ? "통신 중 오류가 발생했습니다. 조이마스터봇의 회로를 점검 중입니다!" : "Communication error occurred. Checking my circuits!" }]);
     } finally {
       setIsTyping(false);
     }
   };
 
   const quickLinks = [
-    { id: 'education', label: '교육 프로그램', icon: '🎓' },
-    { id: 'mentors', label: '멘토 찾기', icon: '👤' },
-    { id: 'support', label: '자주 묻는 질문', icon: '❓' },
+    { id: 'education', label: lang === 'ko' ? '교육 프로그램' : 'Education', icon: '🎓' },
+    { id: 'mentors', label: lang === 'ko' ? '멘토 찾기' : 'Find Mentors', icon: '👤' },
+    { id: 'support', label: lang === 'ko' ? '자주 묻는 질문' : 'FAQ', icon: '❓' },
   ];
 
   return (
@@ -149,7 +160,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ onNavigate }) => {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="봇에게 질문하기..." 
+                placeholder={lang === 'ko' ? "봇에게 질문하기..." : "Ask me anything..."} 
                 className="w-full bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl px-4 md:px-6 py-3 md:py-4 pr-12 md:pr-16 text-xs md:text-sm outline-none focus:ring-4 ring-blue-600/5 transition-all font-medium" 
               />
               <button 

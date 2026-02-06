@@ -1,36 +1,60 @@
 
 import React, { useState } from 'react';
+import { Language } from '../types';
 
-const SupportSection: React.FC = () => {
+interface SupportSectionProps {
+  lang: Language;
+}
+
+const SupportSection: React.FC<SupportSectionProps> = ({ lang }) => {
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
+  const [formData, setFormData] = useState({ name: '', phone: '', category: '', message: '' });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.phone || !formData.message) {
+      alert(lang === 'ko' ? "모든 정보를 입력해주세요." : "Please fill in all information.");
+      return;
+    }
+    alert(lang === 'ko' ? "문의가 정상적으로 접수되었습니다. 30분 이내에 답변드리겠습니다." : "Inquiry received successfully. We will respond within 30 minutes.");
+    setFormData({ name: '', phone: '', category: '', message: '' });
+  };
 
   const faqs = [
     {
       category: "L2E & Points",
-      question: "획득한 MP 포인트는 언제 사용할 수 있나요?",
-      answer: "수업 완료 및 퀴즈 제출 즉시 포인트가 적립되며, 포인트샵에서 실시간으로 기프티콘이나 아바타 아이템으로 교환 가능합니다."
+      question: lang === 'ko' ? "획득한 MP 포인트는 언제 사용할 수 있나요?" : "When can I use earned MP points?",
+      answer: lang === 'ko' 
+        ? "수업 완료 및 퀴즈 제출 즉시 포인트가 적립되며, 포인트샵에서 실시간으로 기프티콘이나 아바타 아이템으로 교환 가능합니다."
+        : "Points are credited immediately upon class completion and quiz submission, and can be exchanged for gifticons or avatar items in real-time."
     },
     {
       category: "Mentoring",
-      question: "멘토 매칭은 어떻게 진행되나요?",
-      answer: "AI 레벨 테스트 결과와 학생의 관심사를 분석하여 가장 적합한 전공과 성향을 가진 멘토를 시스템이 자동 추천하며, 학부모님과 상의 후 최종 확정됩니다."
+      question: lang === 'ko' ? "멘토 매칭은 어떻게 진행되나요?" : "How is mentor matching performed?",
+      answer: lang === 'ko'
+        ? "AI 레벨 테스트 결과와 학생의 관심사를 분석하여 가장 적합한 전공과 성향을 가진 멘토를 시스템이 자동 추천하며, 학부모님과 상의 후 최종 확정됩니다."
+        : "The system automatically recommends mentors with suitable majors and tendencies based on AI level tests and student interests, finalized after parent consultation."
     },
     {
       category: "Admission",
-      question: "AI 세특 보고서는 학교에 그대로 제출해도 되나요?",
-      answer: "AI가 생성한 초안은 학생의 수업 내용을 바탕으로 한 사실 기록입니다. 담당 멘토의 검수를 거쳐 학생부 기재 요령에 맞게 수정된 최종본을 학교에 제출하시기를 권장합니다."
+      question: lang === 'ko' ? "AI 세특 보고서는 학교에 그대로 제출해도 되나요?" : "Can I submit the AI record report as is?",
+      answer: lang === 'ko'
+        ? "AI가 생성한 초안은 학생의 수업 내용을 바탕으로 한 사실 기록입니다. 담당 멘토의 검수를 거쳐 학생부 기재 요령에 맞게 수정된 최종본을 학교에 제출하시기를 권장합니다."
+        : "The AI draft is a factual record based on class. We recommend submitting a final version reviewed by a mentor and edited to fit official guidelines."
     },
     {
       category: "Technical",
-      question: "화상 수업 중 연결이 끊어지면 어떻게 하나요?",
-      answer: "수업 중 기술적 오류 발생 시 24/7 기술 지원팀(02-1234-5678)으로 즉시 연락 주시면 즉각적인 원격 지원을 받으실 수 있습니다."
+      question: lang === 'ko' ? "화상 수업 중 연결이 끊어지면 어떻게 하나요?" : "What if the connection drops during video class?",
+      answer: lang === 'ko'
+        ? "수업 중 기술적 오류 발생 시 24/7 기술 지원팀(02-1234-5678)으로 즉시 연락 주시면 즉각적인 원격 지원을 받으실 수 있습니다."
+        : "If technical errors occur, contact the 24/7 technical support team (02-1234-5678) immediately for remote assistance."
     }
   ];
 
   const contactChannels = [
-    { title: "Call Support", value: "02-1234-5678", sub: "평일 09:00 - 22:00", icon: "📞", color: "bg-blue-600" },
-    { title: "Email Inquiry", value: "help@aimentor.edu", sub: "24시간 접수 가능", icon: "✉️", color: "bg-slate-900" },
-    { title: "Kakao Talk", value: "AI멘토아카데미", sub: "실시간 채팅 상담", icon: "💬", color: "bg-yellow-400" }
+    { title: "Call Support", value: "02-1234-5678", sub: lang === 'ko' ? "평일 09:00 - 22:00" : "Weekdays 09:00 - 22:00", icon: "📞", color: "bg-blue-600" },
+    { title: "Email Inquiry", value: "help@aimentor.edu", sub: lang === 'ko' ? "24시간 접수 가능" : "Available 24/7", icon: "✉️", color: "bg-slate-900" },
+    { title: "Kakao Talk", value: "AI멘토아카데미", sub: lang === 'ko' ? "실시간 채팅 상담" : "Real-time chat", icon: "💬", color: "bg-yellow-400" }
   ];
 
   return (
@@ -43,14 +67,13 @@ const SupportSection: React.FC = () => {
             WE ARE HERE <br /> <span className="text-blue-500 underline decoration-blue-500/30 underline-offset-8">FOR YOUR SUCCESS</span>
           </h1>
           <p className="text-slate-400 max-w-xl mx-auto text-lg italic leading-relaxed">
-            "학습 중 궁금한 점이나 기술적인 도움이 필요하신가요? <br />
-            AI 멘토 아카데미 지원팀이 가장 빠르고 정확하게 도와드립니다."
+            {lang === 'ko' ? <>"학습 중 궁금한 점이나 기술적인 도움이 필요하신가요? <br /> AI 멘토 아카데미 지원팀이 가장 빠르고 정확하게 도와드립니다."</> : <>"Need technical help or have questions? <br /> AI Mentor Academy support team will help you quickly and accurately."</>}
           </p>
           
           <div className="max-w-2xl mx-auto mt-12 bg-white/10 backdrop-blur-xl p-2 rounded-[2.5rem] border border-white/20 flex items-center">
             <input 
               type="text" 
-              placeholder="무엇을 도와드릴까요? 검색어를 입력하세요." 
+              placeholder={lang === 'ko' ? "무엇을 도와드릴까요? 검색어를 입력하세요." : "How can we help? Enter search terms."} 
               className="bg-transparent flex-1 px-8 py-4 outline-none text-white placeholder:text-slate-500 font-medium"
             />
             <button className="bg-blue-600 p-4 rounded-3xl hover:bg-blue-500 transition-all shadow-xl shadow-blue-600/20">
@@ -59,7 +82,6 @@ const SupportSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Decorative Background */}
         <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
           <div className="absolute top-20 right-20 w-96 h-96 bg-blue-600 rounded-full blur-[120px]"></div>
           <div className="absolute bottom-0 left-20 w-80 h-80 bg-indigo-600 rounded-full blur-[100px]"></div>
@@ -91,8 +113,7 @@ const SupportSection: React.FC = () => {
               <span className="text-blue-600">ASKED QUESTIONS</span>
             </h2>
             <p className="text-slate-500 text-lg leading-relaxed italic">
-              가장 자주 묻는 질문들을 모았습니다. <br />
-              더 자세한 상담은 1:1 문의를 이용해주세요.
+              {lang === 'ko' ? <>가장 자주 묻는 질문들을 모았습니다. <br /> 더 자세한 상담은 1:1 문의를 이용해주세요.</> : <>Collected most frequent questions. <br /> For details, use 1:1 inquiry.</>}
             </p>
             <button className="hidden lg:block px-10 py-4 border-2 border-slate-200 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all">
               View All FAQ ↗
@@ -131,48 +152,75 @@ const SupportSection: React.FC = () => {
               STILL HAVE <br /> <span className="text-blue-500">QUESTIONS?</span>
             </h3>
             <p className="text-slate-400 text-lg leading-relaxed relative z-10 italic">
-              "상담원이 학생의 학습 현황을 미리 파악하고 연락드립니다. <br />
-              궁금한 내용을 아래 양식에 남겨주세요."
+              {lang === 'ko' ? <>"상담원이 학생의 학습 현황을 미리 파악하고 연락드립니다. <br /> 궁금한 내용을 아래 양식에 남겨주세요."</> : <>"Agents check student status before contacting. <br /> Leave your inquiry below."</>}
             </p>
             <div className="space-y-6 relative z-10 pt-10">
               <div className="flex items-center gap-6">
                 <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">👋</div>
                 <div>
-                   <p className="text-sm font-black">평균 응답 시간</p>
+                   <p className="text-sm font-black">{lang === 'ko' ? '평균 응답 시간' : 'Average Response Time'}</p>
                    <p className="text-xs text-blue-400 font-bold uppercase tracking-widest">Under 30 Minutes</p>
                 </div>
               </div>
             </div>
-            {/* Shapes */}
             <div className="absolute top-0 right-0 w-80 h-80 bg-blue-600/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2"></div>
           </div>
 
           <div className="lg:w-3/5 p-16 lg:p-24 bg-white">
-             <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+             <form className="space-y-8" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                    <div className="space-y-3">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Full Name</label>
-                      <input type="text" placeholder="성함을 입력하세요" className="w-full bg-slate-50 border border-slate-100 rounded-[2rem] px-8 py-5 text-sm outline-none focus:ring-4 ring-blue-600/5 transition-all font-bold" />
+                      <input 
+                        type="text" 
+                        required
+                        value={formData.name}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        placeholder={lang === 'ko' ? '성함을 입력하세요' : 'Enter your name'} 
+                        className="w-full bg-slate-50 border border-slate-100 rounded-[2rem] px-8 py-5 text-sm outline-none focus:ring-4 ring-blue-600/5 transition-all font-bold" 
+                      />
                    </div>
                    <div className="space-y-3">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Phone Number</label>
-                      <input type="text" placeholder="010-0000-0000" className="w-full bg-slate-50 border border-slate-100 rounded-[2rem] px-8 py-5 text-sm outline-none focus:ring-4 ring-blue-600/5 transition-all font-bold" />
+                      <input 
+                        type="text" 
+                        required
+                        value={formData.phone}
+                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                        placeholder="010-0000-0000" 
+                        className="w-full bg-slate-50 border border-slate-100 rounded-[2rem] px-8 py-5 text-sm outline-none focus:ring-4 ring-blue-600/5 transition-all font-bold" 
+                      />
                    </div>
                 </div>
                 <div className="space-y-3">
                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Subject / Category</label>
-                   <select className="w-full bg-slate-50 border border-slate-100 rounded-[2rem] px-8 py-5 text-sm outline-none focus:ring-4 ring-blue-600/5 transition-all font-bold appearance-none">
-                      <option>교육 과정 및 수강 문의</option>
-                      <option>L2E 포인트 및 리워드 관련</option>
-                      <option>기술적 오류 및 결제 문의</option>
-                      <option>기타 문의</option>
+                   <select 
+                    value={formData.category}
+                    onChange={(e) => setFormData({...formData, category: e.target.value})}
+                    className="w-full bg-slate-50 border border-slate-100 rounded-[2rem] px-8 py-5 text-sm outline-none focus:ring-4 ring-blue-600/5 transition-all font-bold appearance-none"
+                   >
+                      <option value="">{lang === 'ko' ? '주제 선택' : 'Select Category'}</option>
+                      <option>{lang === 'ko' ? '교육 과정 및 수강 문의' : 'Education Course Inquiry'}</option>
+                      <option>{lang === 'ko' ? 'L2E 포인트 및 리워드 관련' : 'L2E Points & Rewards'}</option>
+                      <option>{lang === 'ko' ? '기술적 오류 및 결제 문의' : 'Technical & Payment Inquiry'}</option>
+                      <option>{lang === 'ko' ? '기타 문의' : 'Other'}</option>
                    </select>
                 </div>
                 <div className="space-y-3">
                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Message</label>
-                   <textarea rows={5} placeholder="문의 내용을 상세히 작성해 주세요." className="w-full bg-slate-50 border border-slate-100 rounded-[3rem] px-8 py-6 text-sm outline-none focus:ring-4 ring-blue-600/5 transition-all font-bold"></textarea>
+                   <textarea 
+                    rows={5} 
+                    required
+                    value={formData.message}
+                    onChange={(e) => setFormData({...formData, message: e.target.value})}
+                    placeholder={lang === 'ko' ? '문의 내용을 상세히 작성해 주세요.' : 'Write your inquiry details.'} 
+                    className="w-full bg-slate-50 border border-slate-100 rounded-[3rem] px-8 py-6 text-sm outline-none focus:ring-4 ring-blue-600/5 transition-all font-bold"
+                   ></textarea>
                 </div>
-                <button className="w-full py-6 bg-blue-600 text-white rounded-[2.5rem] font-black uppercase tracking-[0.2em] hover:bg-slate-900 transition-all shadow-2xl shadow-blue-600/20 active:scale-95 text-xs">
+                <button 
+                  type="submit"
+                  className="w-full py-6 bg-blue-600 text-white rounded-[2.5rem] font-black uppercase tracking-[0.2em] hover:bg-slate-900 transition-all shadow-2xl shadow-blue-600/20 active:scale-95 text-xs"
+                >
                   Send Inquiry Now ↗
                 </button>
              </form>

@@ -1,24 +1,29 @@
 
 import React from 'react';
+import { Language } from '../types';
 
-const ReviewSection: React.FC = () => {
+interface ReviewSectionProps {
+  lang: Language;
+}
+
+const ReviewSection: React.FC<ReviewSectionProps> = ({ lang }) => {
   const reviews = [
     {
       name: "Rina Kartika",
-      role: "Parent, Business Strategy Examinee",
-      text: "멘토링을 통해 제 아이의 학습 동기가 확실히 살아났습니다. 특히 아바타가 성장하는 모습에 아이가 큰 흥미를 느껴요.",
+      role: lang === 'ko' ? "학부모, 비즈니스 전략 수험생" : "Parent, Business Strategy Examinee",
+      text: lang === 'ko' ? "멘토링을 통해 제 아이의 학습 동기가 확실히 살아났습니다. 특히 아바타가 성장하는 모습에 아이가 큰 흥미를 느껴요." : "My child's learning motivation revived through mentoring. They're especially interested in the avatar's growth.",
       avatar: "https://picsum.photos/100/100?random=11"
     },
     {
       name: "Fadil Rahman",
-      role: "High School Senior",
-      text: "AI 세특 빌더가 정말 큰 도움이 되었습니다. 수업 시간에 나눈 이야기들이 훌륭한 탐구 보고서로 변하는 게 신기해요.",
+      role: lang === 'ko' ? "고3 수험생" : "High School Senior",
+      text: lang === 'ko' ? "AI 세특 빌더가 정말 큰 도움이 되었습니다. 수업 시간에 나눈 이야기들이 훌륭한 탐구 보고서로 변하는 게 신기해요." : "AI Record Builder helped a lot. It's amazing how class conversations turn into great research reports.",
       avatar: "https://picsum.photos/100/100?random=12"
     },
     {
       name: "Melissa Anggraini",
-      role: "College Student",
-      text: "포인트 보상 시스템 덕분에 공부가 더 이상 고통이 아닌 즐거움이 되었습니다. 매달 기프티콘 받는 재미가 쏠쏠해요.",
+      role: lang === 'ko' ? "대학생" : "College Student",
+      text: lang === 'ko' ? "포인트 보상 시스템 덕분에 공부가 더 이상 고통이 아닌 즐거움이 되었습니다. 매달 기프티콘 받는 재미가 쏠쏠해요." : "Thanks to the point reward system, studying is joy, not pain. Getting gifticons every month is fun.",
       avatar: "https://picsum.photos/100/100?random=13"
     }
   ];
@@ -32,7 +37,9 @@ const ReviewSection: React.FC = () => {
       <div className="relative z-10">
         <div className="text-center mb-20">
           <h2 className="text-4xl font-black text-slate-900 mb-4 italic">WHAT OUR STUDENTS SAY</h2>
-          <p className="text-slate-500">전국 5,000명 이상의 사용자가 경험한 변화의 목소리입니다.</p>
+          <p className="text-slate-500">
+            {lang === 'ko' ? '전국 5,000명 이상의 사용자가 경험한 변화의 목소리입니다.' : 'Voices of change from over 5,000 users nationwide.'}
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

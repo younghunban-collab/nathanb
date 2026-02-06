@@ -1,13 +1,20 @@
 
 import React from 'react';
+import { Language } from '../types';
 
-const MentorDetail: React.FC = () => {
+interface MentorDetailProps {
+  lang: Language;
+  // Add onNavigate to match expected props in App.tsx
+  onNavigate: (id: string) => void;
+}
+
+const MentorDetail: React.FC<MentorDetailProps> = ({ lang, onNavigate }) => {
   const mentors = [
     {
       name: "Daudet Afroseth",
       role: "Global Head Mentor",
       specialty: "Full-Stack AI Education",
-      img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop",
+      img: "https://images.unsplash.com/photo-1544168190-79c17527004f?q=80&w=400&auto=format&fit=crop",
       description: "10년 이상의 실무 경력과 AI 교육 전문성을 보유. 복잡한 시스템 아키텍처부터 실전 노하우까지 전수합니다."
     },
     {
@@ -47,7 +54,7 @@ const MentorDetail: React.FC = () => {
       {/* 1. Professional Team Lineup (Based on EliteGuard Image Section 3) */}
       <section className="max-w-7xl mx-auto px-6 pt-32 pb-20 text-center">
         <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-12 uppercase italic">
-          Meet Our <span className="text-blue-600">Expert Mentors</span>
+          {lang === 'ko' ? <>Meet Our <span className="text-blue-600">Expert Mentors</span></> : <>Meet Our <span className="text-blue-600">Expert Mentors</span></>}
         </h1>
         <div className="flex flex-wrap justify-center gap-4 md:gap-12 mt-20">
           {mentors.map((m, i) => (
@@ -68,7 +75,9 @@ const MentorDetail: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-24">
             <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase italic mb-6">Expertise in AI Mentoring</h2>
-            <p className="text-slate-500 max-w-2xl mx-auto">단순한 강의를 넘어 학생의 인생을 바꾸는 4가지 고도화 서비스 레벨을 제공합니다.</p>
+            <p className="text-slate-500 max-w-2xl mx-auto">
+              {lang === 'ko' ? '단순한 강의를 넘어 학생의 인생을 바꾸는 4가지 고도화 서비스 레벨을 제공합니다.' : 'Beyond simple lectures, we provide 4 advanced service levels that change students lives.'}
+            </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
@@ -95,27 +104,40 @@ const MentorDetail: React.FC = () => {
             <span className="text-blue-600 underline underline-offset-8 decoration-4">Accelerate Success</span>
           </h3>
           <p className="text-slate-500 text-lg leading-relaxed">
-            "우리는 지식을 전달하는 강사가 아닌, 성장을 설계하는 멘토입니다."<br />
-            PDF 사업 계획서에 명시된 Ci(조합), Ni(참신성), Fi(실현가능성) 공식을 바탕으로, 
-            기존 화상 영어의 한계를 뛰어넘는 '질적 평가' 중심의 멘토링을 실현합니다.
+            {lang === 'ko' ? (
+              <>
+                "우리는 지식을 전달하는 강사가 아닌, 성장을 설계하는 멘토입니다."<br />
+                PDF 사업 계획서에 명시된 Ci(조합), Ni(참신성), Fi(실현가능성) 공식을 바탕으로, 
+                기존 화상 영어의 한계를 뛰어넘는 '질적 평가' 중심의 멘토링을 실현합니다.
+              </>
+            ) : (
+              <>
+                "We are mentors who design growth, not instructors who deliver knowledge."<br />
+                Based on the Ci, Ni, Fi formula, we realize mentoring centered on 'qualitative evaluation' that goes beyond existing limits.
+              </>
+            )}
           </p>
           <div className="space-y-6">
              <div className="flex items-center gap-4">
                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-black">1</div>
-               <p className="font-bold text-slate-700 underline decoration-slate-200 decoration-2">AI 에고 미러링 시스템으로 학습 몰입도 극대화</p>
+               <p className="font-bold text-slate-700 underline decoration-slate-200 decoration-2">
+                 {lang === 'ko' ? 'AI 에고 미러링 시스템으로 학습 몰입도 극대화' : 'Maximize learning immersion with AI Ego Mirroring system'}
+               </p>
              </div>
              <div className="flex items-center gap-4">
                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-black">2</div>
-               <p className="font-bold text-slate-700 underline decoration-slate-200 decoration-2">입시 역설계(Reverse Engineering) 로드맵 제공</p>
+               <p className="font-bold text-slate-700 underline decoration-slate-200 decoration-2">
+                 {lang === 'ko' ? '입시 역설계(Reverse Engineering) 로드맵 제공' : 'Provide Reverse Engineering roadmap for admissions'}
+               </p>
              </div>
           </div>
           <button className="px-12 py-5 bg-slate-900 text-white rounded-xl font-bold text-sm shadow-2xl hover:scale-105 active:scale-95 transition-all">
-            LEARN MORE ABOUT OUR PROCESS
+            {lang === 'ko' ? '우리의 프로세스 더 알아보기' : 'LEARN MORE ABOUT OUR PROCESS'}
           </button>
         </div>
         <div className="flex-1 relative">
            <div className="aspect-[4/5] bg-slate-900 rounded-[4rem] overflow-hidden shadow-2xl group">
-             <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop" className="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-700" alt="Session" />
+             <img src="https://images.unsplash.com/photo-1544168190-79c17527004f?q=80&w=1200&auto=format&fit=crop" className="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-700" alt="Session" />
              <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-2xl cursor-pointer hover:scale-110 transition-transform">
                   <div className="w-0 h-0 border-t-[12px] border-t-transparent border-l-[20px] border-l-blue-600 border-b-[12px] border-b-transparent ml-2"></div>
@@ -131,22 +153,24 @@ const MentorDetail: React.FC = () => {
           <div className="lg:w-1/2 text-white space-y-8">
             <h2 className="text-5xl font-black tracking-tighter italic uppercase">Schedule A <br />Free Consultation</h2>
             <p className="text-slate-400 text-lg leading-relaxed">
-              지금 바로 AI 멘토와 상담을 예약하세요. <br />
-              학생의 현재 레벨 테스트부터 아바타 생성까지, <br />
-              성공적인 입시 로드맵을 무료로 설계해 드립니다.
+              {lang === 'ko' ? (
+                <>지금 바로 AI 멘토와 상담을 예약하세요. <br /> 학생의 현재 레벨 테스트부터 아바타 생성까지, <br /> 성공적인 입시 로드맵을 무료로 설계해 드립니다.</>
+              ) : (
+                <>Schedule a consultation with an AI mentor right now. <br /> From level tests to avatar creation, <br /> we design a successful roadmap for free.</>
+              )}
             </p>
             <div className="pt-10 space-y-6">
                <div className="flex items-center gap-6 p-6 bg-white/5 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors">
                   <span className="text-2xl">📞</span>
                   <div>
-                    <p className="text-xs font-black text-blue-400 uppercase tracking-widest mb-1">Call Us Directly</p>
+                    <p className="text-xs font-black text-blue-400 uppercase tracking-widest mb-1">{lang === 'ko' ? '전화 상담' : 'Call Us Directly'}</p>
                     <p className="text-xl font-bold">02-1234-5678</p>
                   </div>
                </div>
                <div className="flex items-center gap-6 p-6 bg-white/5 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors">
                   <span className="text-2xl">✉️</span>
                   <div>
-                    <p className="text-xs font-black text-blue-400 uppercase tracking-widest mb-1">Email Support</p>
+                    <p className="text-xs font-black text-blue-400 uppercase tracking-widest mb-1">{lang === 'ko' ? '이메일 문의' : 'Email Support'}</p>
                     <p className="text-xl font-bold">contact@aimentor.academy</p>
                   </div>
                </div>
