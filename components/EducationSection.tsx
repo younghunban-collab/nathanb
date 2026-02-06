@@ -26,7 +26,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({ lang, onNavigate })
           <p className="text-slate-500 text-base md:text-lg leading-relaxed font-medium max-w-xl mx-auto lg:mx-0">
             {lang === 'ko' 
               ? '단순한 지식 전달을 넘어 멘토와의 깊은 정서적 교감을 통해 학습의 즐거움을 깨닫고, 유학을 포함한 구체적인 진로 로드맵을 설계하여 학생의 미래를 통합적으로 빚어가는 전인 교육을 지향합니다.' 
-              : 'Beyond mere lessons, we provide learning joy and admission results through an avatar growth system and L2E reward model.'}
+              : 'We aspire to holistic education that transcends simple knowledge transfer, fostering the joy of learning through deep emotional connection with mentors and shaping a student's future integrally by designing specific career roadmaps, including studying abroad.'}
           </p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 text-left max-w-2xl mx-auto lg:mx-0">
