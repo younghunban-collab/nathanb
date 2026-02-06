@@ -16,7 +16,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({ lang, onNavigate })
             <span className="text-[9px] md:text-[10px] font-black text-blue-600 tracking-[0.4em] uppercase block">Future-Ready Learning</span>
             <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-slate-900 leading-[1.1] tracking-tighter">
               {lang === 'ko' ? (
-                <>대한민국 1% 대입 전략,<br /><span className="text-blue-600 italic">AI MENTORING</span></>
+                <>대한민국 1% 인재 전략,<br /><span className="text-blue-600 italic">AI MENTORING</span></>
               ) : (
                 <>Top 1% Strategy,<br /><span className="text-blue-600 italic">AI MENTORING</span></>
               )}
