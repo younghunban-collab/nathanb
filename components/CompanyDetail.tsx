@@ -9,6 +9,15 @@ interface CompanyDetailProps {
 
 const CompanyDetail: React.FC<CompanyDetailProps> = ({ lang, onNavigate }) => {
   const [isDeckOpen, setIsDeckOpen] = useState(false);
+  const [isJobApplyOpen, setIsJobApplyOpen] = useState(false);
+  const [jobFormData, setJobFormData] = useState({
+    name: '',
+    birthDate: '',
+    phone: '',
+    address: '',
+    experience: '',
+    portfolio: ''
+  });
 
   const stats = [
     { label: lang === 'ko' ? "프로젝트 성공" : "Projects Completed", value: "500+" },
@@ -152,6 +161,21 @@ const CompanyDetail: React.FC<CompanyDetailProps> = ({ lang, onNavigate }) => {
     }
   ];
 
+  const handleJobSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const currentApplicants = JSON.parse(localStorage.getItem('academy_job_applicants') || '[]');
+    const newApplicant = {
+      ...jobFormData,
+      id: Date.now(),
+      applyDate: new Date().toISOString(),
+      status: 'Pending'
+    };
+    localStorage.setItem('academy_job_applicants', JSON.stringify([...currentApplicants, newApplicant]));
+    alert(lang === 'ko' ? "지원이 완료되었습니다! 검토 후 연락드리겠습니다." : "Application submitted! We will contact you after review.");
+    setIsJobApplyOpen(false);
+    setJobFormData({ name: '', birthDate: '', phone: '', address: '', experience: '', portfolio: '' });
+  };
+
   const t = {
     ko: {
       heroTitle: <>기술로 세상을 <br /> <span className="text-blue-600">혁신하는 파트너</span></>,
@@ -165,7 +189,7 @@ const CompanyDetail: React.FC<CompanyDetailProps> = ({ lang, onNavigate }) => {
       ceoPara5: "조이마스터가 열어갈 수준 높은 온라인 교육 서비스, 그 혁신의 여정에 여러분을 초대합니다. 기술의 가치를 경험하고, 함께 성공의 기쁨을 누리는 동반자가 되어 주십시오.",
       ceoPara6: "감사합니다.",
       ceoSign: "JoyMaster Inc. CEO David Park",
-      ctaBtn: "상담하기",
+      ctaBtn: "채용지원하기",
       deckBtn: "회사소개서"
     },
     en: {
@@ -180,7 +204,7 @@ const CompanyDetail: React.FC<CompanyDetailProps> = ({ lang, onNavigate }) => {
       ceoPara5: "We invite you to the innovative journey of high-quality online education that JoyMaster will open. Become a partner who experiences the value of technology and enjoys the joy of success together.",
       ceoPara6: "Thank you.",
       ceoSign: "JoyMaster Inc. CEO David Park",
-      ctaBtn: "Consult Now",
+      ctaBtn: "Apply for Job",
       deckBtn: "Company Deck"
     }
   }[lang];
@@ -196,7 +220,10 @@ const CompanyDetail: React.FC<CompanyDetailProps> = ({ lang, onNavigate }) => {
           {t.heroDesc}
         </p>
         <div className="flex justify-center gap-4">
-          <button className="px-10 py-5 bg-slate-900 text-white rounded-xl font-black uppercase tracking-widest text-xs shadow-2xl hover:bg-blue-600 transition-all active:scale-95">
+          <button 
+            onClick={() => setIsJobApplyOpen(true)}
+            className="px-10 py-5 bg-slate-900 text-white rounded-xl font-black uppercase tracking-widest text-xs shadow-2xl hover:bg-blue-600 transition-all active:scale-95"
+          >
             {t.ctaBtn}
           </button>
           <button 
@@ -221,92 +248,151 @@ const CompanyDetail: React.FC<CompanyDetailProps> = ({ lang, onNavigate }) => {
         </div>
       </section>
 
-      {/* Company Deck Modal */}
+      {/* Recruitment Modal (Step 1) */}
+      {isJobApplyOpen && (
+        <div className="fixed inset-0 z-[500] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onClick={() => setIsJobApplyOpen(false)}></div>
+          <div className="relative w-full max-w-xl bg-white rounded-[3rem] shadow-2xl overflow-hidden p-8 md:p-12 max-h-[90vh] overflow-y-auto custom-scrollbar animate-in zoom-in-95">
+             <div className="flex justify-between items-center mb-8">
+                <h3 className="text-3xl font-black italic uppercase tracking-tighter text-slate-900">{lang === 'ko' ? '인재 채용 지원' : 'Job Application'}</h3>
+                <button onClick={() => setIsJobApplyOpen(false)} className="p-2 text-slate-400 hover:text-slate-900">
+                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+             </div>
+             <form className="space-y-6" onSubmit={handleJobSubmit}>
+                <div className="space-y-2">
+                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Full Name</label>
+                   <input required type="text" placeholder="이름을 입력하세요" className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4 text-sm font-bold outline-none focus:ring-2 ring-blue-600/10" value={jobFormData.name} onChange={(e) => setJobFormData({...jobFormData, name: e.target.value})} />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                   <div className="space-y-2">
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Birth Date</label>
+                      <input required type="date" className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4 text-sm font-bold outline-none focus:ring-2 ring-blue-600/10" value={jobFormData.birthDate} onChange={(e) => setJobFormData({...jobFormData, birthDate: e.target.value})} />
+                   </div>
+                   <div className="space-y-2">
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Phone</label>
+                      <input required type="tel" placeholder="010-0000-0000" className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4 text-sm font-bold outline-none focus:ring-2 ring-blue-600/10" value={jobFormData.phone} onChange={(e) => setJobFormData({...jobFormData, phone: e.target.value})} />
+                   </div>
+                </div>
+                <div className="space-y-2">
+                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Address</label>
+                   <input required type="text" placeholder="거주지 주소" className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4 text-sm font-bold outline-none focus:ring-2 ring-blue-600/10" value={jobFormData.address} onChange={(e) => setJobFormData({...jobFormData, address: e.target.value})} />
+                </div>
+                <div className="space-y-2">
+                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Career / Experience</label>
+                   <textarea required rows={4} placeholder="주요 경력 사항 및 기술 스택을 입력하세요" className="w-full bg-slate-50 border border-slate-100 rounded-[2rem] px-6 py-4 text-sm font-bold outline-none focus:ring-2 ring-blue-600/10" value={jobFormData.experience} onChange={(e) => setJobFormData({...jobFormData, experience: e.target.value})}></textarea>
+                </div>
+                <div className="space-y-2">
+                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Portfolio Link (Optional)</label>
+                   <input type="url" placeholder="https://..." className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4 text-sm font-bold outline-none focus:ring-2 ring-blue-600/10" value={jobFormData.portfolio} onChange={(e) => setJobFormData({...jobFormData, portfolio: e.target.value})} />
+                </div>
+                <button type="submit" className="w-full py-5 bg-slate-900 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-blue-600 transition-all shadow-xl active:scale-95">
+                  {lang === 'ko' ? '지원서 제출하기 ↗' : 'Submit Application ↗'}
+                </button>
+             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Company Deck Modal (Step 2 - Improved for Web & Mobile) */}
       {isDeckOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-slate-900/90 backdrop-blur-md" onClick={() => setIsDeckOpen(false)}></div>
-          <div className="relative w-full max-w-5xl bg-white rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 h-[90vh] flex flex-col">
-            <div className="p-8 md:p-12 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-0 md:p-4">
+          <div className="absolute inset-0 bg-slate-900/95 backdrop-blur-xl" onClick={() => setIsDeckOpen(false)}></div>
+          <div className="relative w-full h-full md:h-[95vh] md:max-w-6xl bg-white md:rounded-[4rem] shadow-2xl overflow-hidden animate-in zoom-in-95 flex flex-col">
+            <div className="p-6 md:p-10 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 shrink-0">
                <div className="space-y-1">
-                 <h2 className="text-3xl font-black italic tracking-tighter text-slate-900 uppercase">Success Portfolio</h2>
-                 <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">20 Years of Technical Innovation</p>
+                 <h2 className="text-2xl md:text-3xl font-black italic tracking-tighter text-slate-900 uppercase">Success Portfolio</h2>
+                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">20 Years of Technical Innovation</p>
                </div>
-               <button onClick={() => setIsDeckOpen(false)} className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-all">
+               <button onClick={() => setIsDeckOpen(false)} className="w-10 h-10 md:w-14 md:h-14 rounded-2xl bg-white shadow-md flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-all active:scale-90">
                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
                </button>
             </div>
             
-            <div className="flex-1 overflow-y-auto p-8 md:p-12 space-y-12 custom-scrollbar bg-white">
-              {/* Intro Text */}
-              <div className="bg-blue-50/50 p-10 rounded-[2.5rem] border border-blue-100 space-y-4">
-                <p className="text-blue-800 font-bold leading-relaxed">
-                  20여년간 수많은 프로젝트를 수주하여 외주 개발을 성공적으로 구현해오고 있습니다.<br />
-                  개발그룹의 프로젝트 외주개발 및 참여한 성공적인 포트폴리오를 일부 한정 게시합니다.<br />
-                  외주개발의 장점은 비용 절감, 전문 개발팀의 협력, 개발 프로세스 시간 단축 등입니다.<br />
+            <div className="flex-1 overflow-y-auto p-6 md:p-12 space-y-10 custom-scrollbar bg-white">
+              <div className="bg-blue-600 p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] text-white shadow-2xl relative overflow-hidden group">
+                <p className="text-lg md:text-xl font-bold leading-relaxed relative z-10 italic">
+                  20여년간 수많은 프로젝트를 수주하여 외주 개발을 성공적으로 구현해오고 있습니다.<br className="hidden md:block" />
+                  개발그룹의 프로젝트 외주개발 및 참여한 성공적인 포트폴리오를 일부 한정 게시합니다.<br className="hidden md:block" />
+                  외주개발의 장점은 비용 절감, 전문 개발팀의 협력, 개발 프로세스 시간 단축 등입니다.<br className="hidden md:block" />
                   클라이언트 계약상 오픈할 수 없는 외주개발 프로젝트 내용은 게시하지 않았습니다.
                 </p>
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
               </div>
 
-              {/* Portfolio Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10">
                 {portfolio.map((item, idx) => (
-                  <div key={idx} className="group p-8 bg-slate-50 border border-slate-100 rounded-[2.5rem] hover:bg-white hover:shadow-2xl hover:border-blue-200 transition-all duration-500 space-y-5">
+                  <div key={idx} className="group p-8 md:p-10 bg-slate-50 border border-slate-100 rounded-[3rem] hover:bg-white hover:shadow-2xl hover:border-blue-200 transition-all duration-500 space-y-6 flex flex-col h-full relative">
                     <div className="flex justify-between items-start">
-                       <span className="px-4 py-1.5 bg-blue-600 text-white text-[10px] font-black rounded-full uppercase tracking-widest">{item.year}</span>
+                       <span className="px-5 py-2 bg-slate-900 text-white text-[10px] font-black rounded-full uppercase tracking-[0.2em]">{item.year}</span>
+                       <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>
                     </div>
-                    <h3 className="text-xl font-black text-slate-900 leading-tight group-hover:text-blue-600 transition-colors">{item.title}</h3>
-                    <div className="space-y-3 pt-4 border-t border-slate-200/60">
+                    <h3 className="text-xl md:text-2xl font-black text-slate-900 leading-tight group-hover:text-blue-600 transition-colors">{item.title}</h3>
+                    <div className="space-y-4 pt-6 border-t border-slate-200/50 flex-1">
                        {item.env && (
                          <div className="flex flex-col gap-1">
-                           <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Environment</span>
-                           <p className="text-xs font-bold text-slate-700">{item.env}</p>
+                           <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Environment</span>
+                           <p className="text-sm font-bold text-slate-700 leading-snug">{item.env}</p>
                          </div>
                        )}
                        {item.lang && (
                          <div className="flex flex-col gap-1">
-                           <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Languages</span>
-                           <p className="text-xs font-bold text-slate-700">{item.lang}</p>
+                           <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Languages</span>
+                           <p className="text-sm font-bold text-slate-800 leading-snug">{item.lang}</p>
                          </div>
                        )}
                        <div className="flex flex-col gap-1">
-                         <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Contribution</span>
-                         <p className="text-xs font-bold text-blue-600">{item.contribution}</p>
+                         <span className="text-[10px] font-black text-blue-400 uppercase tracking-widest">Contribution</span>
+                         <p className="text-sm font-black text-blue-600">{item.contribution}</p>
                        </div>
                        <div className="flex flex-col gap-1">
-                         <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Description</span>
-                         <p className="text-xs font-medium text-slate-500 leading-relaxed italic">"{item.desc}"</p>
+                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Project Description</span>
+                         <p className="text-sm font-medium text-slate-500 leading-relaxed italic">"{item.desc}"</p>
                        </div>
                     </div>
+                    <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-5 text-8xl font-black italic select-none pointer-events-none">{idx + 1}</div>
                   </div>
                 ))}
               </div>
 
-              {/* Additional Text Content From User */}
-              <div className="space-y-6 pt-10 border-t border-slate-100">
-                <h4 className="text-xl font-black italic text-slate-400 uppercase tracking-widest">Historical Archive (Selected)</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-10 pt-16 border-t border-slate-100">
+                <div className="text-center md:text-left space-y-2">
+                   <h4 className="text-2xl md:text-3xl font-black italic text-slate-900 uppercase tracking-tighter">Historical Archive</h4>
+                   <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">A Selection of past milestones</p>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {[
-                    "2023년 AI 인공지능 스포츠 훈련 LMS 시스템",
-                    "2023년 마린키퍼 해양 환경관리 시스템",
-                    "2022년 N 피트니스 그룹 통합 플랫폼",
-                    "2022년 메타렉처 메타버스 강의 솔루션",
-                    "2021년 J-INTERACTION 음식 인식 다이어트 앱",
-                    "2020년 녹십자MS 블루투스 측정 기기 연동",
-                    "2019년 KSIS 검정 ERP 및 회계 시스템",
-                    "2018년 블록체인 Hyperledger 부동산 DAPP"
+                    "2023년 AI 스포츠 LMS 개발",
+                    "2023년 마린키퍼 환경관리",
+                    "2022년 N 피트니스 플랫폼",
+                    "2022년 메타렉처 솔루션",
+                    "2021년 음식 인식 다이어트 앱",
+                    "2020년 녹십자MS 블루투스 연동",
+                    "2019년 KSIS ERP 회계 시스템",
+                    "2018년 블록체인 부동산 DAPP",
+                    "2017년 360 카메라 Player"
                   ].map((h, i) => (
-                    <div key={i} className="flex items-center gap-3 p-4 bg-white border border-slate-100 rounded-2xl shadow-sm">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <p className="text-xs font-bold text-slate-600">{h}</p>
+                    <div key={i} className="flex items-center gap-4 p-6 bg-slate-50 border border-slate-100 rounded-3xl group/item hover:bg-slate-900 hover:text-white transition-all duration-300">
+                      <div className="w-10 h-10 bg-white shadow-sm rounded-xl flex items-center justify-center text-lg group-hover/item:bg-blue-600 group-hover/item:text-white transition-colors">🚀</div>
+                      <p className="text-sm font-bold">{h}</p>
                     </div>
                   ))}
                 </div>
               </div>
+              <div className="h-20 md:h-0"></div> {/* Bottom spacing for mobile navigation */}
             </div>
             
-            <div className="p-8 bg-slate-900 text-white flex justify-between items-center shrink-0">
-               <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40">© 2025 JoyMaster Technical Solutions</p>
-               <button onClick={() => setIsDeckOpen(false)} className="text-[10px] font-black uppercase tracking-widest hover:text-blue-400 transition-colors">Close Portal [ESC]</button>
+            <div className="p-8 md:p-12 bg-slate-900 text-white flex flex-col md:flex-row justify-between items-center gap-6 shrink-0">
+               <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-xl animate-bounce-slow">💎</div>
+                  <div>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40">Technical Identity</p>
+                    <p className="text-sm font-black italic">JOΥMASTER SOLUTIONS</p>
+                  </div>
+               </div>
+               <button onClick={() => setIsDeckOpen(false)} className="px-10 py-4 border-2 border-white/20 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-slate-900 transition-all active:scale-95">
+                 Close Portal [ESC]
+               </button>
             </div>
           </div>
         </div>
